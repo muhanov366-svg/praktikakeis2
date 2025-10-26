@@ -1,5 +1,63 @@
 import datetime
 
+def get_valid_input(prompt, min_value, max_value):
+    while True:
+        user_input = input(prompt)
+        print(f"Пользователь ввёл: {user_input}")  # Отладка
+        
+        try:
+            value = int(user_input)
+            if min_value <= value <= max_value:
+                return value
+            else:
+                print(f"Значение должно быть между {min_value} и {max_value}.")
+        except ValueError:
+            print("Вы ввели некорректные данные. Попробуйте снова.")
+
+# Текущие дата и время
+current_date = datetime.datetime.now()
+
+# Запрашиваем ввод данных у пользователя
+day = get_valid_input("Введите день вашего рождения: ", 1, 31)
+month = get_valid_input("Введите месяц вашего рождения: ", 1, 12)
+year = get_valid_input("Введите год вашего рождения: ", 1900, current_date.year)
+
+def get_day_of_week(day, month, year):
+    date_obj = datetime.date(year, month, day)
+    return date_obj.strftime('%A')
+
+# Определяем день недели
+weekday_name = get_day_of_week(day, month, year)
+
+def is_leap_year(year):
+    """Определяет, является ли год високосным"""
+    if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
+        return True
+    else:
+        return False
+
+# Определяем, является ли год високосным
+leap_year_status = is_leap_year(year)
+if leap_year_status:
+    leap_year_message = "Это был високосный год."
+else:
+    leap_year_message = "Это был невисокосный год."
+
+def calculate_age(birth_day, birth_month, birth_year):
+    today = datetime.date.today()
+    
+    age = today.year - birth_year - ((today.month, today.day) < (birth_month, birth_day))
+    return age
+
+# Рассчитываем возраст пользователя
+age = calculate_age(day, month, year)
+
+# Форматируем вывод даты
+formatted_date = f"{day}.{month}.{year}"
+print(f"Ваша дата рождения: {formatted_date}, это был {weekday_name}. {leap_year_message}")
+print(f"Ваш возраст: {age} лет.\n")
+
+
 # Представление цифр от 0 до 9 в виде звездочек
 number_patterns = {
     '0': [" *** ", "*   *", "*   *", "*   *", "*   *", "*   *", " *** "],
@@ -27,63 +85,6 @@ def display_birthday(day, month, year):
     for digit in birthday_str:
         draw_number(digit)
         print("\n")  # Пробел между цифрами
-
-def get_valid_input(prompt, min_value, max_value):
-    while True:
-        user_input = input(prompt)
-        print(f"Пользователь ввёл: {user_input}")  # Отладка
-        
-        try:
-            value = int(user_input)
-            if min_value <= value <= max_value:
-                return value
-            else:
-                print(f"Значение должно быть между {min_value} и {max_value}.")
-        except ValueError:
-            print("Вы ввели некорректные данные. Попробуйте снова.")
-
-def get_day_of_week(day, month, year):
-    date_obj = datetime.date(year, month, day)
-    return date_obj.strftime('%A')
-
-def is_leap_year(year):
-    """Определяет, является ли год високосным"""
-    if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
-        return True
-    else:
-        return False
-
-def calculate_age(birth_day, birth_month, birth_year):
-    today = datetime.date.today()
-    
-    age = today.year - birth_year - ((today.month, today.day) < (birth_month, birth_day))
-    return age
-
-# Текущие дата и время
-current_date = datetime.datetime.now()
-
-# Запрашиваем ввод данных у пользователя
-day = get_valid_input("Введите день вашего рождения: ", 1, 31)
-month = get_valid_input("Введите месяц вашего рождения: ", 1, 12)
-year = get_valid_input("Введите год вашего рождения: ", 1900, current_date.year)
-
-# Определяем день недели
-weekday_name = get_day_of_week(day, month, year)
-
-# Определяем, является ли год високосным
-leap_year_status = is_leap_year(year)
-if leap_year_status:
-    leap_year_message = "Это был високосный год."
-else:
-    leap_year_message = "Это был невисокосный год."
-
-# Рассчитываем возраст пользователя
-age = calculate_age(day, month, year)
-
-# Форматируем вывод даты
-formatted_date = f"{day}.{month}.{year}"
-print(f"Ваша дата рождения: {formatted_date}, это был {weekday_name}. {leap_year_message}")
-print(f"Ваш возраст: {age} лет.\n")
 
 # Выводим дату рождения в стиле цифрового табло
 print("Дата вашего рождения в цифровом формате:")
